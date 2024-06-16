@@ -24,6 +24,14 @@ public class StartCommand implements IBotCommand {
 
     private final SubscribeRepository repository;
 
+    private final String initialText = """
+                Привет! Данный бот помогает отслеживать стоимость биткоина.
+                Поддерживаемые команды:
+                 /get_price - получить стоимость биткоина
+                 /subscribe [число] - подписаться на стоимость биткойна в USD
+                
+                """;
+
     @Override
     public String getCommandIdentifier() {
         return "start";
@@ -44,17 +52,13 @@ public class StartCommand implements IBotCommand {
             subscribe.setUserId(userId);
             subscribe.setUuid(UUID.randomUUID());
             repository.save(subscribe);
-            log.info("Добавлен пользователь: " + message.getChat().getUserName());
+            log.info("Добавлен пользователь: {}", message.getChat().getUserName());
         }
 
         SendMessage answer = new SendMessage();
         answer.setChatId(message.getChatId());
+        answer.setText(initialText);
 
-        answer.setText("""
-                Привет! Данный бот помогает отслеживать стоимость биткоина.
-                Поддерживаемые команды:
-                 /get_price - получить стоимость биткоина
-                """);
         try {
             absSender.execute(answer);
         } catch (TelegramApiException e) {
