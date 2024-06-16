@@ -49,12 +49,12 @@ public class SubscribeCommand implements IBotCommand {
         SendMessage answer = new SendMessage();
         answer.setChatId(message.getChatId());
         answer.setText("Новая подписка создана на стоимость " + subscribeCost + " USD");
-        log.info("Создана подписка пользователя: {} на {} USD", message.getChat().getUserName(), subscribeCost);
 
         try {
             absSender.execute(answer);
+            log.info("Создана подписка пользователя: {} на {} USD", message.getChat().getUserName(), subscribeCost);
         } catch (TelegramApiException e) {
-            log.error("Error occurred in /start command", e);
+            log.error("Error occurred in /subscribe command", e);
         }
     }
 
